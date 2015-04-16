@@ -1,0 +1,23 @@
+{
+  "name": "DarkFortress",
+  "version": "0.0.1",
+  "description": "Application to identify member",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cfsghost/DarkFortress.git"
+  },
+  "author": "Fred Chien <cfsghost@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cfsghost/DarkFortress/issues"
+  },
+  "homepage": "https://github.com/cfsghost/DarkFortress",
+  "dependencies": {
+    "brig": "~0.1.1",
+    "pcsclite": "~0.3.6"
+  }
+}
