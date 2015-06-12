@@ -1,6 +1,13 @@
 var Brig = require('brig');
 var pcsc = require('pcsclite');
 var events = require('events');
+//var dbHouse = new DBHouse;
+var higgsdb = ''; // higgstv
+var coverdb = ''; // coverpage
+var channeldb = ''; // channels
+var programdb = ''; // programs
+var tagsdb = ''; // tags
+var tagsID = ''; // 54b62f9e9de9a6700e423ffa
 
 var eventEngine = new events.EventEmitter();
 
@@ -17,6 +24,7 @@ pcsc.on('reader', function(reader) {
 		if ((changes & this.SCARD_STATE_EMPTY) && (status.state & this.SCARD_STATE_EMPTY)) {
 			reader.disconnect(reader.SCARD_LEAVE_CARD, function(err) {
 				console.log('Card removed');
+				//eventEngine.emit('removed');
 
 			});
 			return;
@@ -33,6 +41,10 @@ pcsc.on('reader', function(reader) {
 
 				// Getting serial number
 				reader.transmit(new Buffer([0xFF, 0xCA, 0x00, 0x00, 0x00]), 40, protocol, function(err, data) {
+					console.log(data);
+					//console.log(data.toString('ascii'));
+					console.log(data.toString('hex'));
+					//console.log(JSON.stringify(data));
 					eventEngine.emit('passed');
 				});
 			});
@@ -44,25 +56,11 @@ var brig = new Brig();
 
 brig.on('ready', function(brig) {
 	brig.open('application.qml', function(err, window) {
-/*
-		window.on('heartBeated', function() {
-			console.log('Listener in Node.js Scope');
-		});
-
-		setInterval(function() {
-			window.emit('heartBeated');
-		}, 1000);
-
-		setTimeout(function() {
-			var timestamp = Date.now();
-			console.log('Correct data: ', timestamp, 'Hello', 123);
-			window.emit('touched', timestamp, 'Hello', 123);
-			window.emit('testInt', 99, 100);
-			window.emit('testVariant', 'Variant String');
-		}, 1000);
-*/
 		eventEngine.on('passed', function() {
 			window.emit('passed');
+			setTimeout(function() {
+				window.emit('removed');
+			}, 2000);
 		});
 	});
 });
